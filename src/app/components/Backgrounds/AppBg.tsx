@@ -4,10 +4,10 @@ export default function AppBg() {
   return (
     <div>
       <Image
-        src="/bg-cloud.png"
+        src="/bg-sun-clouds.png"
         fill
         alt="Clouds app background"
-        className="scale-[-1] rounded-[24px] blur-[-2px]"
+        className=" rounded-[24px] blur-[-2px]"
       />
     </div>
   )
