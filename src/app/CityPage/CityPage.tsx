@@ -19,9 +19,26 @@ type ILocation = {
   latitude: number
   longitude: number
 }
+
+type ICityClimate = {
+  name: string
+  main: {
+    feels_like: number
+    grnd_lever: number
+    humidity: number
+    pressure: number
+    sea_level: number
+    temp: number
+    temp_min: number
+    temp_max: number
+  }
+  weather: [{}]
+}
 export default function CityPage() {
+  const API_GOOGLE_KEY = 'AIzaSyCh3c_MvX1o5H01_9NKNx54mzj0mWOp6RY'
   const API_KEY = '3a12998b5f071b3069b0754795eb401c'
-  const [apiData, setApiData] = useState(null)
+  const [locationData, setLocationData] = useState()
+  const [apiData, setApiData] = useState<ICityClimate>()
   const [location, setLocation] = useState<ILocation>()
   const [animar, setAnimar] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -34,7 +51,27 @@ export default function CityPage() {
         setLocation({ latitude, longitude })
       })
     }
+    // Getting state name from geolocation API from google
     if (loading && !apiSuccess) {
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&key=${API_GOOGLE_KEY}
+     `)
+        .then((res) => res.json())
+        // Pegar nome do estado
+        .then((data) => {
+          if (
+            data &&
+            data.results &&
+            data.results[0] &&
+            data.results[0].address_components
+          ) {
+            const locationdata =
+              data.results[0].address_components[4]?.long_name
+            setLocationData(locationdata)
+            console.log(locationdata)
+            console.log(data.results[0]?.address_components[4]?.long_name)
+          }
+        })
+      // Get temperature data
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${location?.latitude}&lon=${location?.longitude}&appid=${API_KEY}`,
       )
@@ -54,12 +91,16 @@ export default function CityPage() {
           //   setShowWeather(
           //     WeatherTypes.filter((weather) => weather.type === data.weather[0].main),
           //   )
-          console.log(data)
+
           setApiData(data)
-          console.log(apiData)
+
           setLoading(false)
           setApiSuccess(true)
           //   setLoading(false)
+        })
+        .then(async () => {
+          setLoading(false)
+          setApiSuccess(true)
         })
         .catch((err) => {
           console.log(err)
@@ -74,7 +115,7 @@ export default function CityPage() {
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
         <div className="absolute z-10 mx-auto h-[700px] w-[300px] rounded-[30px] lg:h-[700px] lg:w-[400px]">
           <AppBg />
-
+          <div></div>
           <div className="mx-auto flex justify-center pt-16 text-white">
             <motion.div
               className="h-[350px] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-6 backdrop-blur-[80px] lg:h-[350px] lg:w-[300px]"
@@ -90,8 +131,8 @@ export default function CityPage() {
                 <div
                   className={`${montserrat300.className} text-sm lg:text-base`}
                 >
-                  <p>Oslo</p>
-                  <p>Norway</p>
+                  <p>{apiData?.name}</p>
+                  <p>{locationData}</p>
                 </div>
                 <div className="">
                   <CloudRain size={50} color="#fff" weight="duotone" />
@@ -99,7 +140,7 @@ export default function CityPage() {
               </div>
               <div className="flex flex-wrap">
                 <p className={`${poppins.className} text-7xl lg:text-8xl`}>
-                  16°
+                  {apiData?.main.temp}°
                 </p>
                 <div className="flex w-full justify-between">
                   <div className={montserrat300.className}>
