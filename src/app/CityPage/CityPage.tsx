@@ -43,6 +43,11 @@ export default function CityPage() {
   const [animar, setAnimar] = useState(false)
   const [loading, setLoading] = useState(true)
   const [apiSuccess, setApiSuccess] = useState(false)
+  function formatteTemp(str: number | undefined) {
+    const nova = str?.toString().substring(0, 2)
+
+    return nova
+  }
   useEffect(() => {
     if ('geolocation' in navigator) {
       // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
@@ -109,7 +114,7 @@ export default function CityPage() {
         })
     }
   }, [loading, apiSuccess, location?.latitude, location?.longitude, apiData])
-
+  const formattedTemp = formatteTemp(apiData?.main.temp)
   return (
     <>
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
@@ -140,7 +145,7 @@ export default function CityPage() {
               </div>
               <div className="flex flex-wrap">
                 <p className={`${poppins.className} text-7xl lg:text-8xl`}>
-                  {apiData?.main.temp}°
+                  {formattedTemp}°
                 </p>
                 <div className="flex w-full justify-between">
                   <div className={montserrat300.className}>
