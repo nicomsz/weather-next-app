@@ -67,7 +67,7 @@ export default function CityPage() {
 
         if (loading && !apiSuccess) {
           fetch(
-            `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=no`,
+            `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=no`,
           )
             .then((res) => res.json())
             .then((data) => {
@@ -165,11 +165,16 @@ export default function CityPage() {
               >
                 <div>
                   <p className="text-[13px]">Sunrise</p>
-                  <p className="text-xl text-white">09:14PM</p>
+                  <p className="text-xl text-white">
+                    {apiData?.forecast?.forecastday[0].astro.sunrise}
+                  </p>
                 </div>
                 <div>
                   <p className="text-[13px]">Sunset</p>
-                  <p className="text-xl text-white">15:39</p>
+                  <p className="text-xl text-white">
+                    {' '}
+                    {apiData?.forecast?.forecastday[0].astro.sunset}
+                  </p>
                 </div>
                 <div>
                   <p className="text-[13px]">Chance of rain</p>
