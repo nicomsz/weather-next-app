@@ -102,7 +102,7 @@ export default function CityPage() {
               onClick={() => setAnimar(!animar)}
               ref={animatedDivRef}
               animate={
-                animar ? { height: '71vh' } : { scale: 1, height: '50vh' }
+                animar ? { height: '72vh' } : { scale: 1, height: '50vh' }
               }
               transition={
                 animar
@@ -209,7 +209,7 @@ export default function CityPage() {
                       transitionDuration: '0.5s',
                     }}
                   />
-                  <p className="text-center text-[12px] text-slate-300 lg:opacity-100 lg:text-[15px]">
+                  <p className="text-center text-[12px] text-slate-300 lg:text-[15px] lg:opacity-100">
                     Today: {apiData?.current?.condition.text}, It is now{' '}
                     {apiData?.current?.temp_c}°. The highest temperature
                     reported today was{' '}
@@ -226,7 +226,7 @@ export default function CityPage() {
               </div>
               <motion.div
                 animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-4 text-center text-slate-300 opacity-0 lg:pt-3`}
+                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-4  text-center text-slate-300 opacity-0 lg:pt-3`}
               >
                 <div>
                   <p className="text-[16.3px] lg:text-[13px]">Sunrise</p>
