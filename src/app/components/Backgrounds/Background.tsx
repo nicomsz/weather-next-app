@@ -6,7 +6,7 @@ export default function Background() {
       src="/bg-sun-clouds.png"
       alt="Clouds background"
       fill
-      className="scale-[1] overflow-hidden border-solid border-transparent shadow-none blur-[25px]"
+      className="scale-[1] overflow-hidden border-solid border-transparent  shadow-none lg:blur-[25px] "
     />
   )
 }
