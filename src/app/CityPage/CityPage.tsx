@@ -90,7 +90,7 @@ export default function CityPage() {
     <>
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
         <Background />
-        <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[750px] lg:w-[400px]">
+        <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[400px]">
           <AppBg />
           <div></div>
           <div
