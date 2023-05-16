@@ -233,7 +233,7 @@ export default function CityPage() {
                 }
               >
                 <motion.div
-                  className="mb-2 h-[0.8px] w-[0%] bg-slate-300 opacity-0 lg:mt-12 lg:h-[1px] lg:opacity-100"
+                  className="mb-2 h-[0.8px] w-[0%] bg-slate-300 opacity-0 lg:mt-8 lg:h-[1px] lg:opacity-100"
                   whileInView={{
                     width: '100%',
                     transitionDuration: '0.5s',
