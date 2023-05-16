@@ -194,7 +194,7 @@ export default function CityPage() {
               </div>
               <motion.div
                 animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 text-center text-slate-300 opacity-0 lg:pt-3`}
+                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-10 text-center text-slate-300 opacity-0 lg:pt-3`}
               >
                 <div>
                   <p className="text-[12px] lg:text-[13px]">Sunrise</p>
