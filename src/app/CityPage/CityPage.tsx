@@ -15,106 +15,75 @@ const montserrat300 = Montserrat({
   weight: '300',
   subsets: ['latin'],
 })
-type ILocation = {
-  latitude: number
-  longitude: number
-}
 
 type ICityClimate = {
-  name: string
-  main: {
-    feels_like: number
-    grnd_lever: number
-    humidity: number
-    pressure: number
-    sea_level: number
-    temp: number
-    temp_min: number
-    temp_max: number
+  forecast: {
+    forecastday: [
+      {
+        date: string
+        day: {
+          maxtemp_c: number
+          mintemp_c: number
+          avgtemp_c: number
+          daily_chance_of_rain: number
+          condition: {
+            icon: string
+            text: string
+          }
+        }
+        astro: {
+          sunrise: string
+          sunset: string
+        }
+      },
+    ]
   }
-  weather: [{}]
+  location: {
+    name: string
+    region: string
+  }
+  current: {
+    humidity: number
+    temp_c: number
+    is_day: number
+    wind_kph: number
+    wind_dir: string
+    condition: {
+      icon: string
+      text: string
+    }
+  }
 }
 export default function CityPage() {
-  const API_GOOGLE_KEY = 'AIzaSyCh3c_MvX1o5H01_9NKNx54mzj0mWOp6RY'
-  const API_KEY = '3a12998b5f071b3069b0754795eb401c'
-  const [locationData, setLocationData] = useState()
+  const API_KEY = '51e19f3c646a42b48f0193741231505'
   const [apiData, setApiData] = useState<ICityClimate>()
-  const [location, setLocation] = useState<ILocation>()
   const [animar, setAnimar] = useState(false)
   const [loading, setLoading] = useState(true)
   const [apiSuccess, setApiSuccess] = useState(false)
-  function formatteTemp(str: number | undefined) {
-    const nova = str?.toString().substring(0, 2)
-
-    return nova
-  }
   useEffect(() => {
     if ('geolocation' in navigator) {
-      // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const { latitude, longitude } = coords
-        setLocation({ latitude, longitude })
+
+        if (loading && !apiSuccess) {
+          fetch(
+            `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=no`,
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setApiData(data)
+              setLoading(false)
+              setApiSuccess(true)
+            })
+            .catch((err) => {
+              console.log('Erro captado:' + err)
+              setLoading(false)
+            })
+        }
       })
     }
-    // Getting state name from geolocation API from google
-    if (loading && !apiSuccess) {
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&key=${API_GOOGLE_KEY}
-     `)
-        .then((res) => res.json())
-        // Pegar nome do estado
-        .then((data) => {
-          if (
-            data &&
-            data.results &&
-            data.results[0] &&
-            data.results[0].address_components
-          ) {
-            const locationdata =
-              data.results[0].address_components[4]?.long_name
-            setLocationData(locationdata)
-            console.log(locationdata)
-            console.log(data.results[0]?.address_components[4]?.long_name)
-          }
-        })
-      // Get temperature data
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${location?.latitude}&lon=${location?.longitude}&appid=${API_KEY}`,
-      )
-        .then((res) => res.json())
-        .then(async (data) => {
-          setApiData(data)
-          console.log(data)
-          //   if (data.cod == 404 || data.cod == 400) {
-          //     // ARRAY OF OBJ
-          //     setShowWeather([
-          //       {
-          //         type: 'Not Found',
-          //         img: 'https://cdn-icons-png.flaticon.com/512/4275/4275497.png',
-          //       },
-          //     ])
-          //   }
-          //   setShowWeather(
-          //     WeatherTypes.filter((weather) => weather.type === data.weather[0].main),
-          //   )
+  }, [loading, apiSuccess])
 
-          setApiData(data)
-
-          setLoading(false)
-          setApiSuccess(true)
-          //   setLoading(false)
-        })
-        .then(async () => {
-          setLoading(false)
-          setApiSuccess(true)
-        })
-        .catch((err) => {
-          console.log(err)
-          setLoading(false)
-          //   setLoading(false)
-        })
-    }
-  }, [loading, apiSuccess, location?.latitude, location?.longitude, apiData])
-  const formattedTemp = formatteTemp(apiData?.main.temp)
   return (
     <>
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
@@ -136,8 +105,8 @@ export default function CityPage() {
                 <div
                   className={`${montserrat300.className} text-sm lg:text-base`}
                 >
-                  <p>{apiData?.name}</p>
-                  <p>{locationData}</p>
+                  <p>{apiData?.location?.name}</p>
+                  <p>{apiData?.location?.region}</p>
                 </div>
                 <div className="">
                   <CloudRain size={50} color="#fff" weight="duotone" />
@@ -145,17 +114,22 @@ export default function CityPage() {
               </div>
               <div className="flex flex-wrap">
                 <p className={`${poppins.className} text-7xl lg:text-8xl`}>
-                  {formattedTemp}°
+                  {apiData?.current?.temp_c}°
                 </p>
                 <div className="flex w-full justify-between">
                   <div className={montserrat300.className}>
                     <div className="flex flex-row gap-3">
                       <Umbrella size={20} color="#fff" weight="duotone" />
-                      <p>65%</p>
+                      <p>
+                        {
+                          apiData?.forecast?.forecastday[0].day
+                            .daily_chance_of_rain
+                        }
+                      </p>
                     </div>
                     <div className="flex flex-row gap-3">
                       <Wind size={20} color="#fff" weight="duotone" />
-                      <p>12 km/h</p>
+                      <p>{apiData?.current?.wind_kph}</p>
                     </div>
                     <div className="flex flex-row gap-3 pl-1 pt-1">
                       <Image
@@ -164,14 +138,7 @@ export default function CityPage() {
                         height={15}
                         alt="wind rose icon"
                       />
-                      <p>S</p>
-                    </div>
-                  </div>
-                  <div className="flex grow" />
-                  <div className="mt-2 flex flex-wrap items-end ">
-                    <div className={montserrat300.className}>
-                      <p>H: 16°</p>
-                      <p>T: 10°</p>
+                      <p>{apiData?.current?.wind_dir}</p>
                     </div>
                   </div>
                 </div>
@@ -206,11 +173,16 @@ export default function CityPage() {
                 </div>
                 <div>
                   <p className="text-[13px]">Chance of rain</p>
-                  <p className="text-xl text-white">75%</p>
+                  <p className="text-xl text-white">
+                    {apiData?.forecast?.forecastday[0].day.daily_chance_of_rain}
+                    %
+                  </p>
                 </div>
                 <div>
                   <p className="text-[13px]">Humidity</p>
-                  <p className="text-xl text-white">79%</p>
+                  <p className="text-xl text-white">
+                    {apiData?.current?.humidity}%
+                  </p>
                 </div>
               </motion.div>
               <motion.div
@@ -230,8 +202,9 @@ export default function CityPage() {
                   }}
                 />
                 <p className="text-sm text-slate-300 ">
-                  Today: Rain, It is now 16°. The highest temperature reported
-                  today was 18°
+                  Today: {apiData?.current?.condition.text}, It is now{' '}
+                  {apiData?.current?.temp_c}°. The highest temperature reported
+                  today was {apiData?.forecast?.forecastday[0].day.maxtemp_c}°
                 </p>
                 <motion.div
                   className="mt-2 h-[0.8px] w-[0%] bg-slate-300 lg:h-[1px] "
