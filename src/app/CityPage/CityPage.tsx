@@ -102,7 +102,7 @@ export default function CityPage() {
               onClick={() => setAnimar(!animar)}
               ref={animatedDivRef}
               animate={
-                animar ? { height: '70vh' } : { scale: 1, height: '50vh' }
+                animar ? { height: '71vh' } : { scale: 1, height: '50vh' }
               }
               transition={
                 animar
