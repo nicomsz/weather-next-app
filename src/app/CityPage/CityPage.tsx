@@ -175,7 +175,7 @@ export default function CityPage() {
                 </div>
 
                 <motion.div
-                  className="mx-auto mt-2  text-center lg:mt-5"
+                  className="mx-auto mt-10  text-center lg:mt-5"
                   animate={animar ? { opacity: 0 } : { opacity: 1 }}
                 >
                   <p
@@ -197,7 +197,7 @@ export default function CityPage() {
                 className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-10 text-center text-slate-300 opacity-0 lg:pt-3`}
               >
                 <div>
-                  <p className="text-[12px] lg:text-[13px]">Sunrise</p>
+                  <p className="text-[13px] lg:text-[13px]">Sunrise</p>
                   <p className="text-[12px] text-white lg:text-xl">
                     {apiData?.forecast?.forecastday[0].astro.sunrise}
                   </p>
