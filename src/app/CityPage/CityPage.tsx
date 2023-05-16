@@ -192,65 +192,68 @@ export default function CityPage() {
                   />
                 </motion.div>
               </div>
+              <div>
+                <motion.div
+                  className=" opacity-0"
+                  animate={animar ? { opacity: 1 } : { opacity: 0 }}
+                  transition={
+                    animar
+                      ? { type: 'spring', delay: 0.2 }
+                      : { type: 'tween', delay: 0 }
+                  }
+                >
+                  <motion.div
+                    className="mb-2 h-[0.8px] w-[0%] bg-slate-300 lg:mt-8 lg:h-[1px] lg:opacity-100"
+                    whileInView={{
+                      width: '100%',
+                      transitionDuration: '0.5s',
+                    }}
+                  />
+                  <p className="text-center text-[12px] text-slate-300 lg:opacity-100 lg:text-[15px]">
+                    Today: {apiData?.current?.condition.text}, It is now{' '}
+                    {apiData?.current?.temp_c}°. The highest temperature
+                    reported today was{' '}
+                    {apiData?.forecast?.forecastday[0].day.maxtemp_c}°
+                  </p>
+                  <motion.div
+                    className="mt-2 h-[0.8px] w-[0%] bg-slate-300  lg:h-[1px] lg:opacity-100"
+                    whileInView={{
+                      width: '100%',
+                      transitionDuration: '0.5s',
+                    }}
+                  />
+                </motion.div>
+              </div>
               <motion.div
                 animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-10 text-center text-slate-300 opacity-0 lg:pt-3`}
+                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-4 text-center text-slate-300 opacity-0 lg:pt-3`}
               >
                 <div>
-                  <p className="text-[13px] lg:text-[13px]">Sunrise</p>
-                  <p className="text-[12px] text-white lg:text-xl">
+                  <p className="text-[16.3px] lg:text-[13px]">Sunrise</p>
+                  <p className="text-[14px] text-white lg:text-xl">
                     {apiData?.forecast?.forecastday[0].astro.sunrise}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] lg:text-[13px]">Sunset</p>
-                  <p className="text-[12px] text-white lg:text-xl">
+                  <p className="text-[16.3px] lg:text-[13px]">Sunset</p>
+                  <p className="text-[14px] text-white lg:text-xl">
                     {' '}
                     {apiData?.forecast?.forecastday[0].astro.sunset}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] lg:text-[13px]">Chance of rain</p>
-                  <p className="text-[12px] text-white lg:text-xl">
+                  <p className="text-[16.3px] lg:text-[13px]">Rain chance</p>
+                  <p className="text-[14px] text-white lg:text-xl">
                     {apiData?.forecast?.forecastday[0].day.daily_chance_of_rain}
                     %
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12px] lg:text-[13px]">Humidity</p>
-                  <p className="text-[12px] text-white lg:text-xl">
+                  <p className="text-[16.3px] lg:text-[13px]">Humidity</p>
+                  <p className="text-[14px] text-white lg:text-xl">
                     {apiData?.current?.humidity}%
                   </p>
                 </div>
-              </motion.div>
-              <motion.div
-                className="pt-5 opacity-0"
-                animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                transition={
-                  animar
-                    ? { type: 'spring', delay: 0.2 }
-                    : { type: 'tween', delay: 0 }
-                }
-              >
-                <motion.div
-                  className="mb-2 h-[0.8px] w-[0%] bg-slate-300 opacity-0 lg:mt-8 lg:h-[1px] lg:opacity-100"
-                  whileInView={{
-                    width: '100%',
-                    transitionDuration: '0.5s',
-                  }}
-                />
-                <p className="text-center text-sm text-slate-300 opacity-0 lg:opacity-100">
-                  Today: {apiData?.current?.condition.text}, It is now{' '}
-                  {apiData?.current?.temp_c}°. The highest temperature reported
-                  today was {apiData?.forecast?.forecastday[0].day.maxtemp_c}°
-                </p>
-                <motion.div
-                  className="mt-2 h-[0.8px] w-[0%] bg-slate-300 opacity-0  lg:h-[1px] lg:opacity-100"
-                  whileInView={{
-                    width: '100%',
-                    transitionDuration: '0.5s',
-                  }}
-                />
               </motion.div>
             </motion.div>
           </div>
