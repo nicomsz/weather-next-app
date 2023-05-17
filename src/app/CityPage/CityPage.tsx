@@ -15,6 +15,25 @@ const montserrat300 = Montserrat({
   weight: '300',
   subsets: ['latin'],
 })
+type IForecast = [
+  {
+    date: string
+    day: {
+      maxtemp_c: number
+      mintemp_c: number
+      avgtemp_c: number
+      daily_chance_of_rain: number
+      condition: {
+        icon: string
+        text: string
+      }
+    }
+    astro: {
+      sunrise: string
+      sunset: string
+    }
+  },
+]
 
 type ICityClimate = {
   forecast: {
@@ -54,9 +73,11 @@ type ICityClimate = {
     }
   }
 }
+
 export default function CityPage() {
   const API_KEY = '51e19f3c646a42b48f0193741231505'
   const [apiData, setApiData] = useState<ICityClimate>()
+  const [forecastData, setForecastData] = useState<IForecast>()
   const [animar, setAnimar] = useState(false)
   const [loading, setLoading] = useState(true)
   const [apiSuccess, setApiSuccess] = useState(false)
@@ -72,6 +93,9 @@ export default function CityPage() {
           )
             .then((res) => res.json())
             .then((data) => {
+              console.log(data)
+              setForecastData(data.forecast.forecastday.slice(0, 6))
+              console.log(forecastData)
               setApiData(data)
               setLoading(false)
               setApiSuccess(true)
@@ -92,13 +116,12 @@ export default function CityPage() {
         <Background />
         <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[450px]">
           <AppBg />
-          <div></div>
           <div
-            className="mx-auto flex justify-center rounded-[30px] text-white lg:pt-16"
+            className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16"
             ref={divref}
           >
             <motion.div
-              className="h-[50vh] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6"
+              className="mx-auto h-[50vh] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6"
               onClick={() => setAnimar(!animar)}
               ref={animatedDivRef}
               animate={
@@ -139,11 +162,7 @@ export default function CityPage() {
                         weight="duotone"
                       />
                       <p className="text-sm lg:text-2xl">
-                        {
-                          apiData?.forecast?.forecastday[0].day
-                            .daily_chance_of_rain
-                        }
-                        %
+                        {forecastData?.[0].day.avgtemp_c}%
                       </p>
                     </div>
                     <div className="flex flex-row gap-3">
@@ -212,8 +231,7 @@ export default function CityPage() {
                   <p className="text-center text-[12px] text-slate-300 lg:text-[15px] lg:opacity-100">
                     Today: {apiData?.current?.condition.text}, It is now{' '}
                     {apiData?.current?.temp_c}°. The highest temperature
-                    reported today was{' '}
-                    {apiData?.forecast?.forecastday[0].day.maxtemp_c}°
+                    reported today was {forecastData?.[0].day.maxtemp_c}°
                   </p>
                   <motion.div
                     className="mt-2 h-[0.8px] w-[0%] bg-slate-300  lg:h-[1px] lg:opacity-100"
@@ -231,21 +249,20 @@ export default function CityPage() {
                 <div>
                   <p className="text-[16.3px] lg:text-[13px]">Sunrise</p>
                   <p className="text-[14px] text-white lg:text-xl">
-                    {apiData?.forecast?.forecastday[0].astro.sunrise}
+                    {forecastData?.[0].astro.sunrise}
                   </p>
                 </div>
                 <div>
                   <p className="text-[16.3px] lg:text-[13px]">Sunset</p>
                   <p className="text-[14px] text-white lg:text-xl">
                     {' '}
-                    {apiData?.forecast?.forecastday[0].astro.sunset}
+                    {forecastData?.[0].astro.sunset}
                   </p>
                 </div>
                 <div>
                   <p className="text-[16.3px] lg:text-[13px]">Rain chance</p>
                   <p className="text-[14px] text-white lg:text-xl">
-                    {apiData?.forecast?.forecastday[0].day.daily_chance_of_rain}
-                    %
+                    {forecastData?.[0].day.daily_chance_of_rain}%
                   </p>
                 </div>
                 <div>
@@ -256,8 +273,31 @@ export default function CityPage() {
                 </div>
               </motion.div>
             </motion.div>
+            <div
+              className={
+                animar
+                  ? `${montserrat300.className} mx-auto flex h-[100px] w-[80%] flex-row content-center items-start justify-center gap-6 rounded-2xl border-[0.3px] border-gray-300 p-10 pt-5 align-middle text-white opacity-0 backdrop-blur-[80px]`
+                  : `${montserrat300.className} mx-auto flex h-[100px] w-[80%] flex-row content-center items-start justify-center gap-6 rounded-2xl border-[0.3px] border-gray-300 p-10 pt-5 align-middle text-white opacity-100 backdrop-blur-[80px]`
+              }
+            >
+              <ul className="flex flex-wrap gap-4">
+                {forecastData?.map((day) => (
+                  <li key={day.date}>
+                    {day.date}
+                    {day.day.avgtemp_c}
+                    <Image
+                      src={`https:${day.day.condition.icon}`}
+                      alt="Icon"
+                      width={30}
+                      height={30}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+        <div></div>
       </div>
     </>
   )
