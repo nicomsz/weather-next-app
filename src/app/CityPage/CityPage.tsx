@@ -94,7 +94,7 @@ export default function CityPage() {
             .then((res) => res.json())
             .then((data) => {
               console.log(data)
-              setForecastData(data.forecast.forecastday.slice(0, 6))
+              setForecastData(data.forecast.forecastday.slice(1, 7))
               console.log(forecastData)
               setApiData(data)
               setLoading(false)
@@ -107,7 +107,7 @@ export default function CityPage() {
         }
       })
     }
-  }, [loading, apiSuccess])
+  }, [loading, apiSuccess, forecastData])
   const animatedDivRef = useRef(null)
 
   return (
@@ -116,188 +116,216 @@ export default function CityPage() {
         <Background />
         <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[450px]">
           <AppBg />
-          <div
-            className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16"
-            ref={divref}
-          >
-            <motion.div
-              className="mx-auto h-[50vh] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6"
-              onClick={() => setAnimar(!animar)}
-              ref={animatedDivRef}
-              animate={
-                animar ? { height: '72vh' } : { scale: 1, height: '50vh' }
-              }
-              transition={
-                animar
-                  ? { type: 'fade', delay: 0 }
-                  : { type: 'tween', delay: 0.3 }
-              }
+          <div className="mx-auto flex w-fit items-center justify-center p-2 ">
+            <div
+              className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16"
+              ref={divref}
             >
-              <div className="flex flex-wrap justify-between">
-                <div
-                  className={`${montserrat300.className} text-sm lg:text-base`}
-                >
-                  {/* Localização */}
-                  <p>{apiData?.location?.name}</p>
-                  <p>{apiData?.location?.region}</p>
+              <motion.div
+                className="mx-auto h-[50vh] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6"
+                onClick={() => setAnimar(!animar)}
+                ref={animatedDivRef}
+                animate={
+                  animar ? { height: '72vh' } : { scale: 1, height: '50vh' }
+                }
+                transition={
+                  animar
+                    ? { type: 'fade', delay: 0 }
+                    : { type: 'tween', delay: 0.3 }
+                }
+              >
+                <div className="flex flex-wrap justify-between">
+                  <div
+                    className={`${montserrat300.className} text-sm lg:text-base`}
+                  >
+                    {/* Localização */}
+                    <p>{apiData?.location?.name}</p>
+                    <p>{apiData?.location?.region}</p>
+                  </div>
+                  <div className="">
+                    <CloudRain
+                      color="#fff"
+                      weight="duotone"
+                      className="h-[50px] w-[50px] lg:h-[70px] lg:w-[70px] "
+                    />
+                  </div>
                 </div>
-                <div className="">
-                  <CloudRain
-                    color="#fff"
-                    weight="duotone"
-                    className="h-[50px] w-[50px] lg:h-[70px] lg:w-[70px] "
-                  />
-                </div>
-              </div>
-              <div className="flex flex-wrap">
-                <p className={`${poppins.className} text-5xl lg:text-8xl`}>
-                  {apiData?.current?.temp_c}°
-                </p>
-                <div className="flex w-full justify-between pt-2">
-                  <div className={montserrat300.className}>
-                    <div className="flex flex-row gap-3">
-                      <Umbrella
-                        className="h-[20px] w-[20px] lg:h-[40px] lg:w-[40px]"
-                        color="#fff"
-                        weight="duotone"
-                      />
-                      <p className="text-sm lg:text-2xl">
-                        {forecastData?.[0].day.avgtemp_c}%
-                      </p>
-                    </div>
-                    <div className="flex flex-row gap-3">
-                      <Wind
-                        className="h-[20px] w-[20px] lg:h-[40px] lg:w-[40px]"
-                        color="#fff"
-                        weight="duotone"
-                      />
-                      <p className="text-sm lg:text-2xl">
-                        {apiData?.current?.wind_kph} km/h
-                      </p>
-                    </div>
-                    <div className="flex flex-row gap-3 pl-1 pt-1 ">
-                      <div className="absolute h-[20px] w-[15px] lg:h-[40px] lg:w-[35px]">
-                        <Image
-                          src="/icons8-wind-64.png"
-                          fill
-                          alt="wind rose icon"
+                <div className="flex flex-wrap">
+                  <p className={`${poppins.className} text-5xl lg:text-8xl`}>
+                    {apiData?.current?.temp_c}°
+                  </p>
+                  <div className="flex w-full justify-between pt-2">
+                    <div className={montserrat300.className}>
+                      <div className="flex flex-row gap-3">
+                        <Umbrella
+                          className="h-[20px] w-[20px] lg:h-[40px] lg:w-[40px]"
+                          color="#fff"
+                          weight="duotone"
                         />
-                      </div>
-
-                      <div>
-                        <p className=" ml-7 text-sm lg:ml-12 lg:text-2xl">
-                          {apiData?.current?.wind_dir}
+                        <p className="text-sm lg:text-2xl">
+                          {forecastData?.[0].day.avgtemp_c}%
                         </p>
+                      </div>
+                      <div className="flex flex-row gap-3">
+                        <Wind
+                          className="h-[20px] w-[20px] lg:h-[40px] lg:w-[40px]"
+                          color="#fff"
+                          weight="duotone"
+                        />
+                        <p className="text-sm lg:text-2xl">
+                          {apiData?.current?.wind_kph} km/h
+                        </p>
+                      </div>
+                      <div className="flex flex-row gap-3 pl-1 pt-1 ">
+                        <div className="absolute h-[20px] w-[15px] lg:h-[40px] lg:w-[35px]">
+                          <Image
+                            src="/icons8-wind-64.png"
+                            fill
+                            alt="wind rose icon"
+                          />
+                        </div>
+
+                        <div>
+                          <p className=" ml-7 text-sm lg:ml-12 lg:text-2xl">
+                            {apiData?.current?.wind_dir}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <motion.div
-                  className="mx-auto mt-10  text-center lg:mt-5"
-                  animate={animar ? { opacity: 0 } : { opacity: 1 }}
-                >
-                  <p
-                    className={`${montserrat300.className} text-base lg:text-2xl`}
+                  <motion.div
+                    className="mx-auto mt-10  text-center lg:mt-5"
+                    animate={animar ? { opacity: 0 } : { opacity: 1 }}
                   >
-                    Click for more details
-                  </p>
-                  <motion.div
-                    className="h-[0.8px] w-[0%] bg-white lg:h-[1px] "
-                    whileInView={{
-                      width: '100%',
-                      transitionDuration: '0.3s',
-                    }}
-                  />
-                </motion.div>
-              </div>
-              <div>
-                <motion.div
-                  className=" opacity-0"
-                  animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                  transition={
-                    animar
-                      ? { type: 'spring', delay: 0.2 }
-                      : { type: 'tween', delay: 0 }
-                  }
-                >
-                  <motion.div
-                    className="mb-2 h-[0.8px] w-[0%] bg-slate-300 lg:mt-8 lg:h-[1px] lg:opacity-100"
-                    whileInView={{
-                      width: '100%',
-                      transitionDuration: '0.5s',
-                    }}
-                  />
-                  <p className="text-center text-[12px] text-slate-300 lg:text-[15px] lg:opacity-100">
-                    Today: {apiData?.current?.condition.text}, It is now{' '}
-                    {apiData?.current?.temp_c}°. The highest temperature
-                    reported today was {forecastData?.[0].day.maxtemp_c}°
-                  </p>
-                  <motion.div
-                    className="mt-2 h-[0.8px] w-[0%] bg-slate-300  lg:h-[1px] lg:opacity-100"
-                    whileInView={{
-                      width: '100%',
-                      transitionDuration: '0.5s',
-                    }}
-                  />
-                </motion.div>
-              </div>
-              <motion.div
-                animate={animar ? { opacity: 1 } : { opacity: 0 }}
-                className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-4  text-center text-slate-300 opacity-0 lg:pt-3`}
-              >
-                <div>
-                  <p className="text-[16.3px] lg:text-[13px]">Sunrise</p>
-                  <p className="text-[14px] text-white lg:text-xl">
-                    {forecastData?.[0].astro.sunrise}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[16.3px] lg:text-[13px]">Sunset</p>
-                  <p className="text-[14px] text-white lg:text-xl">
-                    {' '}
-                    {forecastData?.[0].astro.sunset}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[16.3px] lg:text-[13px]">Rain chance</p>
-                  <p className="text-[14px] text-white lg:text-xl">
-                    {forecastData?.[0].day.daily_chance_of_rain}%
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[16.3px] lg:text-[13px]">Humidity</p>
-                  <p className="text-[14px] text-white lg:text-xl">
-                    {apiData?.current?.humidity}%
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-            <div
-              className={
-                animar
-                  ? `${montserrat300.className} mx-auto flex h-[100px] w-[80%] flex-row content-center items-start justify-center gap-6 rounded-2xl border-[0.3px] border-gray-300 p-10 pt-5 align-middle text-white opacity-0 backdrop-blur-[80px]`
-                  : `${montserrat300.className} mx-auto flex h-[100px] w-[80%] flex-row content-center items-start justify-center gap-6 rounded-2xl border-[0.3px] border-gray-300 p-10 pt-5 align-middle text-white opacity-100 backdrop-blur-[80px]`
-              }
-            >
-              <ul className="flex flex-wrap gap-4">
-                {forecastData?.map((day) => (
-                  <li key={day.date}>
-                    {day.date}
-                    {day.day.avgtemp_c}
-                    <Image
-                      src={`https:${day.day.condition.icon}`}
-                      alt="Icon"
-                      width={30}
-                      height={30}
+                    <p
+                      className={`${montserrat300.className} text-base lg:text-2xl`}
+                    >
+                      Click for more details
+                    </p>
+                    <motion.div
+                      className="h-[0.8px] w-[0%] bg-white lg:h-[1px] "
+                      whileInView={{
+                        width: '100%',
+                        transitionDuration: '0.3s',
+                      }}
                     />
-                  </li>
-                ))}
-              </ul>
+                  </motion.div>
+                </div>
+                <div>
+                  <motion.div
+                    className=" opacity-0"
+                    animate={animar ? { opacity: 1 } : { opacity: 0 }}
+                    transition={
+                      animar
+                        ? { type: 'spring', delay: 0.2 }
+                        : { type: 'tween', delay: 0 }
+                    }
+                  >
+                    <motion.div
+                      className="mb-2 h-[0.8px] w-[0%] bg-slate-300 lg:mt-8 lg:h-[1px] lg:opacity-100"
+                      whileInView={{
+                        width: '100%',
+                        transitionDuration: '0.5s',
+                      }}
+                    />
+                    <p className="text-center text-[12px] text-slate-300 lg:text-[15px] lg:opacity-100">
+                      Today: {apiData?.current?.condition.text}, It is now{' '}
+                      {apiData?.current?.temp_c}°. The highest temperature
+                      reported today was {forecastData?.[0].day.maxtemp_c}°
+                    </p>
+                    <motion.div
+                      className="mt-2 h-[0.8px] w-[0%] bg-slate-300  lg:h-[1px] lg:opacity-100"
+                      whileInView={{
+                        width: '100%',
+                        transitionDuration: '0.5s',
+                      }}
+                    />
+                  </motion.div>
+                </div>
+                <motion.div
+                  animate={animar ? { opacity: 1 } : { opacity: 0 }}
+                  className={`${montserrat300.className}  grid grid-cols-2 items-center justify-center gap-4 pt-4  text-center text-slate-300 opacity-0 lg:pt-3`}
+                >
+                  <div>
+                    <p className="text-[16.3px] lg:text-[13px]">Sunrise</p>
+                    <p className="text-[14px] text-white lg:text-xl">
+                      {forecastData?.[0].astro.sunrise}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[16.3px] lg:text-[13px]">Sunset</p>
+                    <p className="text-[14px] text-white lg:text-xl">
+                      {' '}
+                      {forecastData?.[0].astro.sunset}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[16.3px] lg:text-[13px]">Rain chance</p>
+                    <p className="text-[14px] text-white lg:text-xl">
+                      {forecastData?.[0].day.daily_chance_of_rain}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[16.3px] lg:text-[13px]">Humidity</p>
+                    <p className="text-[14px] text-white lg:text-xl">
+                      {apiData?.current?.humidity}%
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
+              <motion.div
+                animate={animar ? { opacity: 0 } : { opacity: 100 }}
+                transition={
+                  animar
+                    ? { type: 'tween', delay: 0 }
+                    : { type: 'tween', delay: 0.7 }
+                }
+                className={
+                  animar
+                    ? `${montserrat300.className} text-black opacity-0`
+                    : `relative text-white `
+                }
+              >
+                <p
+                  className={`${montserrat300.className} relative -mb-6 text-lg text-white`}
+                >
+                  Next 6 days:
+                </p>
+              </motion.div>
+              <motion.div
+                animate={animar ? { opacity: 0 } : { opacity: 100 }}
+                transition={
+                  animar
+                    ? { type: 'tween', delay: 0 }
+                    : { type: 'tween', delay: 0.5 }
+                }
+                className={
+                  animar
+                    ? `${montserrat300.className} opacity-0 backdrop-blur-[80px]`
+                    : `${montserrat300.className} mx-auto flex h-[100px] flex-wrap content-center items-center justify-center gap-0 rounded-2xl
+                     border-[0.3px] border-gray-300 p-6  text-white opacity-100 backdrop-blur-[80px]`
+                }
+              >
+                <ul className="flex flex-wrap content-center items-center justify-center gap-6  text-center">
+                  {forecastData?.map((day) => (
+                    <li key={day.date}>
+                      {day.date.substring(8, 10)}
+                      <Image
+                        src={`https:${day.day.condition.icon}`}
+                        alt="Icon"
+                        width={30}
+                        height={30}
+                      />
+                      {day.day.avgtemp_c}°
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             </div>
           </div>
+          <div></div>
         </div>
-        <div></div>
       </div>
     </>
   )
