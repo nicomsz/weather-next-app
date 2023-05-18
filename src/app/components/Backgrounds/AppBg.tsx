@@ -7,7 +7,7 @@ export default function AppBg() {
         src="/bg-sun-clouds.png"
         fill
         alt="Clouds app background"
-        className=" rounded-3xl blur-[-2px] lg:rounded-[0px]"
+        className=" invisible rounded-none blur-[-2px] lg:visible lg:rounded-[24px]"
       />
     </div>
   )

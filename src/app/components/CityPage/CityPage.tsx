@@ -5,6 +5,7 @@ import { Montserrat, Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import Background from '../Backgrounds/Background'
 const poppins = Poppins({
   weight: '400',
   subsets: ['latin'],
@@ -126,12 +127,13 @@ export default function CityPage({ data }: any) {
   return (
     <>
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
-        <AppBg />
-        <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[450px]">
+        <Background />
+        <div className="absolute z-10 mx-auto w-[300px] rounded-[30px] md:w-[450px] lg:h-[800px] lg:w-[450px]">
+          <AppBg />
           <div className="mx-auto flex w-fit items-center justify-center p-2 ">
             <div className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16">
               <motion.div
-                className={`h-[270px] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:h-[420px] lg:w-[350px] lg:p-6`}
+                className={`h-[270px] w-full rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:h-[420px] lg:w-[350px] lg:p-6`}
                 onClick={() => setAnimar(!animar)}
                 ref={animatedDiv}
                 animate={
@@ -317,11 +319,11 @@ export default function CityPage({ data }: any) {
                 className={
                   animar
                     ? `${montserrat300.className} opacity-0 backdrop-blur-[80px]`
-                    : `${montserrat300.className} mx-auto flex h-[100px] flex-wrap content-center items-center justify-center gap-0 rounded-2xl
-                     border-[0.3px] border-gray-300 p-6  text-white opacity-100 backdrop-blur-[80px]`
+                    : `${montserrat300.className} mx-auto flex h-[100px] w-full flex-wrap content-center items-center justify-center gap-0 rounded-2xl
+                     border-[0.3px] border-gray-300 text-white  opacity-100 backdrop-blur-[80px] md:p-6  lg:p-6`
                 }
               >
-                <ul className="flex flex-wrap content-center items-center justify-center gap-6  text-center">
+                <ul className="flex flex-wrap content-center items-center justify-center gap-2 text-center md:gap-5   lg:gap-6">
                   {forecastData?.map((day) => (
                     <li key={day.date}>
                       {day.date.substring(8, 10)}
