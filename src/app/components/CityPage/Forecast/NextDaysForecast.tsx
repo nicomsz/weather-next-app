@@ -1,5 +1,1 @@
-export default function NextDaysForecast() {
-    return (
-        
-    )
-}
+export default function NextDaysForecast() {}
