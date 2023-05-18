@@ -107,40 +107,40 @@ export default function CityPage({ data }: any) {
       })
     }
   }, [loading, apiSuccess, forecastData])
-  const [height, setHeight] = useState('')
+  const [height, setHeight] = useState(0)
+  const [size, setSize] = useState(0)
   const width = window.innerWidth
   const animatedDiv = useRef<HTMLDivElement>(null!)
   useEffect(() => {
     function responsiveHeight() {
       if (width < 796) {
-        setHeight('200px')
-        animatedDiv.current.style.height = height
+        setHeight(animatedDiv.current.offsetHeight)
+        setSize(height)
       } else if (width < 1280) {
-        setHeight('400px')
-        animatedDiv.current.style.height = height
+        setHeight(animatedDiv.current.offsetHeight)
+        setSize(height)
       }
     }
     responsiveHeight()
   }, [height, width])
-
+  console.log(height)
   return (
     <>
       <div className="z-[-1] flex h-screen flex-row items-center justify-center">
-        <Background />
+        <AppBg />
         <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[450px]">
-          <AppBg />
           <div className="mx-auto flex w-fit items-center justify-center p-2 ">
             <div className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16">
               <motion.div
-                className={`w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6`}
+                className={`h-[270px] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:h-[420px] lg:w-[350px] lg:p-6`}
                 onClick={() => setAnimar(!animar)}
                 ref={animatedDiv}
                 animate={
                   animar
-                    ? { height: animatedDiv.current.style.height }
+                    ? { height: size + 200 }
                     : {
                         scale: 1,
-                        height: animatedDiv.current.style.height + '200px',
+                        height: size,
                       }
                 }
                 transition={
