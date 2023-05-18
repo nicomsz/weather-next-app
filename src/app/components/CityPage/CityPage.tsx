@@ -108,9 +108,9 @@ export default function CityPage({ data }: any) {
   }, [loading, apiSuccess, forecastData])
   const [height, setHeight] = useState(0)
   const [size, setSize] = useState(0)
-  const width = window.innerWidth
   const animatedDiv = useRef<HTMLDivElement>(null!)
   useEffect(() => {
+    const width = window.innerHeight
     function responsiveHeight() {
       if (width < 796) {
         setHeight(animatedDiv.current.offsetHeight)
@@ -121,7 +121,7 @@ export default function CityPage({ data }: any) {
       }
     }
     responsiveHeight()
-  }, [height, width])
+  }, [height])
   console.log(height)
   return (
     <>
