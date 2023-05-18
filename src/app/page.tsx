@@ -1,5 +1,4 @@
-'use client'
-import CityPage from './CityPage/CityPage'
+import CityPage from './components/CityPage/CityPage'
 
 export default function Home() {
   return (

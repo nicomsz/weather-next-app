@@ -1,11 +1,11 @@
 'use client'
-import Background from '../components/Backgrounds/Background'
-import AppBg from '../components/Backgrounds/AppBg'
+import Background from '../Backgrounds/Background'
+import AppBg from '../Backgrounds/AppBg'
 import { CloudRain, Umbrella, Wind } from '@phosphor-icons/react'
 import { Montserrat, Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { animate, motion } from 'framer-motion'
 const poppins = Poppins({
   weight: '400',
   subsets: ['latin'],
@@ -74,19 +74,18 @@ type ICityClimate = {
   }
 }
 
-export default function CityPage() {
+export default function CityPage({ data }: any) {
   const API_KEY = '51e19f3c646a42b48f0193741231505'
   const [apiData, setApiData] = useState<ICityClimate>()
   const [forecastData, setForecastData] = useState<IForecast>()
   const [animar, setAnimar] = useState(false)
   const [loading, setLoading] = useState(true)
   const [apiSuccess, setApiSuccess] = useState(false)
-  const divref = useRef(null)
+
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const { latitude, longitude } = coords
-
         if (loading && !apiSuccess) {
           fetch(
             `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${latitude},${longitude}&days=7&aqi=yes&alerts=no`,
@@ -108,7 +107,21 @@ export default function CityPage() {
       })
     }
   }, [loading, apiSuccess, forecastData])
-  const animatedDivRef = useRef(null)
+  const [height, setHeight] = useState('')
+  const width = window.innerWidth
+  const animatedDiv = useRef<HTMLDivElement>(null!)
+  useEffect(() => {
+    function responsiveHeight() {
+      if (width < 796) {
+        setHeight('200px')
+        animatedDiv.current.style.height = height
+      } else if (width < 1280) {
+        setHeight('400px')
+        animatedDiv.current.style.height = height
+      }
+    }
+    responsiveHeight()
+  }, [height, width])
 
   return (
     <>
@@ -117,16 +130,18 @@ export default function CityPage() {
         <div className="absolute z-10 mx-auto  rounded-[30px] lg:h-[800px] lg:w-[450px]">
           <AppBg />
           <div className="mx-auto flex w-fit items-center justify-center p-2 ">
-            <div
-              className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16"
-              ref={divref}
-            >
+            <div className="mx-auto flex flex-col justify-center gap-10 rounded-[30px] text-white lg:pt-16">
               <motion.div
-                className="mx-auto h-[50vh] w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6"
+                className={`w-[250px] rounded-2xl border-[0.3px] border-gray-300 p-4 backdrop-blur-[80px] lg:w-[350px] lg:p-6`}
                 onClick={() => setAnimar(!animar)}
-                ref={animatedDivRef}
+                ref={animatedDiv}
                 animate={
-                  animar ? { height: '72vh' } : { scale: 1, height: '50vh' }
+                  animar
+                    ? { height: animatedDiv.current.style.height }
+                    : {
+                        scale: 1,
+                        height: animatedDiv.current.style.height + '200px',
+                      }
                 }
                 transition={
                   animar
