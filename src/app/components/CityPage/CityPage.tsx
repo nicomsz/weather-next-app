@@ -1,11 +1,10 @@
 'use client'
-import Background from '../Backgrounds/Background'
 import AppBg from '../Backgrounds/AppBg'
 import { CloudRain, Umbrella, Wind } from '@phosphor-icons/react'
 import { Montserrat, Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { animate, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 const poppins = Poppins({
   weight: '400',
   subsets: ['latin'],
